@@ -54,7 +54,9 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     // expects {username: '', email: '', password: ''}
     // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
+    // pass in req.body instead to only update what's passed through
     User.update(req.body, {
+        individualHooks: true,
         where: {
             id: req.params.id
         }
@@ -64,7 +66,7 @@ router.put('/:id', (req, res) => {
                 res.status(404).json({ message: 'No user found with this id' });
                 return;
             }
-            req.json(dbUserData);
+            res.json(dbUserData);
         })
         .catch(err => {
             console.log(err);
